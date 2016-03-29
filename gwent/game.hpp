@@ -12,6 +12,7 @@ private:
   vector<vector<vector<monsterCard*> > > battleField;
   vector<player> players;
   vector<card*> cardPool;
+  void castCard(card * toBeCasted);
 public:
   void initializeCardBase(string filePath);
   void showCard();
