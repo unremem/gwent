@@ -10,7 +10,7 @@ using namespace std;
 class game {
 private:
   vector<vector<vector<monsterCard*> > > battleField;
-  vector<weatherCard*> weatherField;
+  uint8_t weatherField;
   vector<player> players;
   vector<card*> cardPool;
   void castCard(card * toBeCasted);
@@ -28,6 +28,8 @@ public:
   void gameProcess();
   int matchProcess();
   int matchResolution();
+  void showBattleField();
+  void showWeatherField();
 };
 
 #endif
