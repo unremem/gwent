@@ -2,6 +2,7 @@
 #define CARD_HPP
 #include <stdint.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -12,13 +13,13 @@ protected:
   string card_description;
 
 public:
-  void (*cast)(int,vector<vector<vector<monsterCard *> > >&,uint8_t&);
   card() : card_id(0) {}
   card(uint8_t id) : card_id(id) {}
-  virtual void print_card () =0;
   void set_id(uint8_t id) { card_id=id;}
   void set_name(string name) { card_name=name;}
   void set_description(string description) { card_description=description;}
+  virtual void cast (int p, vector<vector<vector<card *> > >& battleField, uint8_t& weatherField)=0;
+  virtual void print_card () =0;
   virtual ~card(){}
 };
 

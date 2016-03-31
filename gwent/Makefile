@@ -8,11 +8,13 @@ card_test: card_test.cpp
 
 player_test: player.o player_test.cpp
 
-initialize: initialize.cpp game.o
+matchProcess: matchProcess.cpp game.o player.o
+
+initialize: initialize.cpp game.o player.o
 
 player.o: player.hpp
 
-game.o: game.hpp player.o
+game.o: game.hpp
 
 clean:
-	rm -f player_test card_test *.o core*
+	rm -f player_test card_test initialize *.o core*

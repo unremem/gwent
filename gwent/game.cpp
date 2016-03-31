@@ -6,12 +6,12 @@ game::game() {
   for (int i=0;i<2;i++) {
     players.push_back(player(i));
   }
-  battleField=vector<vector<vector<monsterCard*> > >(2,vector<vector<monsterCard*> >(3,vector<monsterCard*>));
+  battleField=vector<vector<vector<card*> > >(2,vector<vector<card*> >(3,vector<card*>()));
 }
 
 void game::initializePlayerDeck() {
   for (int p=0;p<2;p++) {
-    for (int c=0;c<40;c++) {
+    for (int c=0;c<20;c++) {
       players[p].addCardToDeck(game::cardPool[c]);
     }
   }
@@ -22,8 +22,8 @@ int game::matchProcess() {
     for (int i=0;i<10;i++) 
       players[p].drawCard();
   int p=0;
-  while (!players[0].end_turn && !players[1].end_turn) {
-    if (players[p].end_turn) p^=0x1;continue;
+  while (!players[0].end_turn || !players[1].end_turn) {
+    if (players[p].end_turn) {p^=0x1;continue;}
     players[p].printHand();
     cout<< "End your turn?(y/n)\n";
     char endTurn='y';
@@ -34,8 +34,9 @@ int game::matchProcess() {
       continue;
     }
     cout<< "Which card are you playing?\n";
+    int inCard=0;
     cin>>inCard;
-    castCard(p,players[p].playCard(inCard));
+    game::castCard(p,players[p].playCard(inCard));
     p^=0x1;
   }
   return matchResolution();
@@ -44,18 +45,24 @@ int game::matchProcess() {
 int game::matchResolution() {
   int res [2]={};
   for (int p=0;p<2;p++) {
-    for (int i=0;i<3;i++ {
+    for (int i=0;i<3;i++) {
       if (weatherField & (0x1<<i)) res[p]+=battleField[p][i].size();
       else {
-        for (monsterCard* mCard:battleField[p][i]) res[p]+=mCard->attack;
+        for (int mCard=0; mCard<battleField[p][i].size(); mCard++) {
+          monsterCard* monster=(monsterCard*)battleField[p][i][mCard];
+          res[p]+=monster->get_attack();
+        }
       }
     }
   }
-  return res[0]>res[1]?0: (res[0]==res[1]? 2:1);
+  return res[0]>res[1]?1: (res[0]==res[1]? 3:2);
 }
 
 void game::castCard(int p, card * toBeCasted) {
   toBeCasted->cast(p, game::battleField, game::weatherField);
+  cout<< "Card:\n";
+  toBeCasted->print_card();
+  cout<< "is casted to the Battle Field!\n";
 }
 
 uint8_t getId(string& line) {
@@ -70,6 +77,7 @@ uint8_t getId(string& line) {
 void game::initializeCardBase(string filePath) {
   ifstream cardBase(filePath);
   string line;
+  srand(time(NULL));
   if (cardBase.is_open()) {
     while (getline(cardBase, line)) {
       uint8_t card_id = getId(line);
@@ -107,12 +115,12 @@ void game::showBattleField() {
   for (int p=0;p<2;p++) {
     cout<< "Player " << p << " field:\n";
     for (int row=0;row<3;row++) {
-      for (card* mCard:battleField[p][row])
-        mCard->print_card();
+      for (int mCard=0; mCard<battleField[p][row].size(); mCard++)
+        battleField[p][row][mCard]->print_card();
     }
   }
 }
 
-void game::showWeatherField() {
-  for (card* wCard:weatherField) wCard->print_card();
-}
+/*void game::showWeatherField() {
+  for (int wCard=0; wCard<4; wCard++) wCard->print_card();
+}*/

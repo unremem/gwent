@@ -9,27 +9,27 @@ using namespace std;
 
 class game {
 private:
-  vector<vector<vector<monsterCard*> > > battleField;
+  vector<vector<vector<card*> > > battleField;
   uint8_t weatherField;
   vector<player> players;
   vector<card*> cardPool;
-  void castCard(card * toBeCasted);
+  void castCard(int p, card * toBeCasted);
 public:
   void initializeCardBase(string filePath);
   void showCard();
   game();
   ~game() {
-    for (card* c:cardPool) {
-      delete c;
+    for (int i=0;i<cardPool.size();i++) {
+      delete cardPool[i];
     }
     cardPool.clear();
   }
   void initializePlayerDeck();
-  void gameProcess();
+  //void gameProcess();
   int matchProcess();
   int matchResolution();
   void showBattleField();
-  void showWeatherField();
+  //void showWeatherField();
 };
 
 #endif
