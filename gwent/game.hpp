@@ -10,6 +10,7 @@ using namespace std;
 class game {
 private:
   vector<vector<vector<monsterCard*> > > battleField;
+  vector<weatherCard*> weatherField;
   vector<player> players;
   vector<card*> cardPool;
   void castCard(card * toBeCasted);

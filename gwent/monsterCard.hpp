@@ -17,6 +17,9 @@ private:
       default: return "Close Combat";
     }
   }
+  void castMonsterCard(int p, vector<vector<vector<monsterCard *> > >& battleField, uint8_t& weatherField) {
+    battleField[p][position].push_back(this);
+  }
 
 public:
   void print_card() {
@@ -28,7 +31,9 @@ public:
   void set_attack(uint8_t atk) { attack=atk;}
   void set_position(uint8_t pos) { position=pos;}
   monsterCard(uint8_t id, uint8_t atk, uint8_t pos) 
-    : card(id), attack(atk), position(pos) {}
+    : card(id), attack(atk), position(pos) {
+    cast=&castMonsterCard;
+  }
   ~monsterCard(){}
 };
     
