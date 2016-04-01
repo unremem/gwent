@@ -2,7 +2,9 @@ CC=g++
 CXXFLAGS=-std=c++0x -g
 LDFLAGS=-g
 
-all: compress uncompress
+all: gwent
+
+gwent: gwent.cpp game.o player.o
 
 card_test: card_test.cpp
 
