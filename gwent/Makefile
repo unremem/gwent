@@ -19,4 +19,4 @@ player.o: player.hpp
 game.o: game.hpp
 
 clean:
-	rm -f player_test card_test initialize *.o core*
+	rm -f gwent matchProcess player_test card_test initialize *.o core*
